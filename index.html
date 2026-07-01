@@ -5,16 +5,21 @@
   <title>的中バナー & 的中ページ 生成ツール</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <style>
-    pre { white-space: pre-wrap; word-break: break-all; }
+    pre { white-space: pre-wrap; word-break: break-all; line-height: 1.6; }
   </style>
 </head>
 <body class="bg-gray-100 p-6">
   <div class="max-w-6xl mx-auto bg-white rounded-2xl shadow-xl p-8">
-    <h1 class="text-3xl font-bold mb-8 text-center">⌛ 的中バナー & 的中ページ 生成ツール</h1>
+    <h1 class="text-3xl font-bold mb-8 text-center">🐎 的中バナー & 的中ページ 生成ツール</h1>
 
     <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
-      <!-- 入力（省略せずそのまま） -->
+      <!-- 入力 -->
       <div class="space-y-6">
+        <div>
+          <label class="block text-sm mb-1 font-medium">的中ページ_リンク (cid)</label>
+          <input id="cid" value="104137" class="w-full border p-3 rounded-lg">
+        </div>
+
         <div>
           <label class="block text-sm mb-1 font-medium">提供ランク</label>
           <select id="rank" onchange="updateRankInfo()" class="w-full border p-3 rounded-lg">
@@ -50,7 +55,7 @@
           <div>
             <label class="block text-sm mb-1">曜日</label>
             <select id="weekday" class="w-full border p-3 rounded-lg">
-              <option value="土">土</option>
+              <option value="土" selected>土</option>
               <option value="日">日</option>
               <option value="月">月</option>
             </select>
@@ -58,8 +63,8 @@
           <div>
             <label class="block text-sm mb-1">競馬場</label>
             <select id="place" class="w-full border p-3 rounded-lg">
-              <option value="札幌">札幌</option>
-              <option value="函館" selected>函館</option>
+              <option value="札幌" selected>札幌</option>
+              <option value="函館">函館</option>
               <option value="福島">福島</option>
               <option value="新潟">新潟</option>
               <option value="東京">東京</option>
@@ -82,8 +87,8 @@
         </div>
 
         <div>
-          <label class="block text-sm mb-1">レース名（的中ページ用）</label>
-          <input id="raceName" value="臥牛山特別" class="w-full border p-3 rounded-lg">
+          <label class="block text-sm mb-1">レース名</label>
+          <input id="raceName" value="" class="w-full border p-3 rounded-lg" placeholder="例: 臥牛山特別">
         </div>
 
         <div class="grid grid-cols-1 gap-4">
@@ -102,25 +107,25 @@
           <div class="space-y-3">
             <div class="flex gap-3 items-center">
               <span class="w-12 font-bold text-red-600">◎</span>
-              <input id="horse1" value="" class="flex-1 border p-3 rounded-lg" placeholder="馬名">
+              <input id="horse1" class="flex-1 border p-3 rounded-lg" placeholder="馬名">
               <input id="pop1" class="w-20 border p-3 rounded-lg" placeholder="人気">
             </div>
             <div class="flex gap-3 items-center">
               <select id="mark2" class="w-20 border p-2 rounded">
-                <option value="▲">▲</option>
                 <option value="○">○</option>
+                <option value="▲" selected>▲</option>
                 <option value="△">△</option>
               </select>
-              <input id="horse2" value="" class="flex-1 border p-3 rounded-lg" placeholder="馬名">
+              <input id="horse2" class="flex-1 border p-3 rounded-lg" placeholder="馬名">
               <input id="pop2" class="w-20 border p-3 rounded-lg" placeholder="人気">
             </div>
             <div class="flex gap-3 items-center">
               <select id="mark3" class="w-20 border p-2 rounded">
-                <option value="○">○</option>
+                <option value="○" selected>○</option>
                 <option value="▲">▲</option>
                 <option value="△">△</option>
               </select>
-              <input id="horse3" value="" class="flex-1 border p-3 rounded-lg" placeholder="馬名">
+              <input id="horse3" class="flex-1 border p-3 rounded-lg" placeholder="馬名">
               <input id="pop3" class="w-20 border p-3 rounded-lg" placeholder="人気">
             </div>
           </div>
@@ -145,12 +150,13 @@
             </div>
             <div class="flex items-center gap-3">
               <span class="w-20">馬連</span>
-              <input id="umaren_point" value="1" class="w-12 border p-3 rounded text-center">点目
+              <input id="umaren_point" class="w-12 border p-3 rounded text-center" placeholder="">
+              <span>点目</span>
               <input id="umaren_man" class="w-16 border p-3 rounded text-center">
               <span>万</span>
               <input id="umaren_en" class="flex-1 border p-3 rounded">
               <span>円</span>
-              <input id="umaren_pct" class="w-16 border p-3 rounded text-center">％指定
+              <input id="umaren_pct" class="w-16 border p-3 rounded text-center" placeholder="％">％指定
             </div>
           </div>
         </div>
@@ -170,13 +176,13 @@
         <div class="mb-6">
           <h3 class="font-bold mb-2">的中バナー</h3>
           <pre id="bannerOutput" class="bg-gray-900 text-green-300 p-5 rounded-xl text-sm h-64 overflow-auto"></pre>
-          <button onclick="copyText('bannerOutput')" class="mt-2 px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg text-sm">的中バナー コピー</button>
+          <button onclick="copyText('bannerOutput')" class="mt-2 px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg text-sm">コピー</button>
         </div>
 
         <div>
           <h3 class="font-bold mb-2">的中ページ</h3>
           <pre id="pageOutput" class="bg-gray-900 text-green-300 p-5 rounded-xl text-sm h-64 overflow-auto"></pre>
-          <button onclick="copyText('pageOutput')" class="mt-2 px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg text-sm">的中ページ コピー</button>
+          <button onclick="copyText('pageOutput')" class="mt-2 px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg text-sm">コピー</button>
         </div>
       </div>
     </div>
@@ -198,7 +204,7 @@
       "Bランク": "推薦勝負レースB",
       "Cランク": "推薦勝負レースC",
       "厳選提供": "特注馬出走レースD",
-      "重賞メイン": "重賞メイン"
+      "重賞メイン": ""
     };
 
     function updateRankInfo() {
@@ -206,9 +212,20 @@
       document.getElementById('thumb').value = thumbnailMap[rank] || "";
       let k = kenshuMap[rank] || rank;
       if (rank === "重賞メイン") {
-        k = document.getElementById('raceName').value || k;
+        k = document.getElementById('raceName').value || "重賞メイン";
       }
       document.getElementById('kenshu').value = k;
+    }
+
+    function formatMoney(man, en) {
+      if (!man && !en) return "";
+      const m = man ? parseInt(man) : 0;
+      const e = en ? parseInt(en) : 0;
+      if (m > 0) {
+        return m + "万" + String(e).padStart(4, '0') + "円";
+      } else {
+        return e + "円";
+      }
     }
 
     function generateBoth() {
@@ -228,28 +245,39 @@
       const title1 = document.getElementById('title1').value;
       const title2 = document.getElementById('title2').value;
 
-      const horse1 = document.getElementById('horse1').value;
-      const horse2 = document.getElementById('horse2').value;
-      const horse3 = document.getElementById('horse3').value;
+      const horse1 = document.getElementById('horse1').value || "";
+      const horse2 = document.getElementById('horse2').value || "";
+      const horse3 = document.getElementById('horse3').value || "";
 
       const sMan = document.getElementById('sanrentan_man').value || "";
       const sEn = document.getElementById('sanrentan_en').value || "";
+      const spMan = document.getElementById('sanrenpuku_man').value || "";
       const spEn = document.getElementById('sanrenpuku_en').value || "";
 
-      const uPoint = document.getElementById('umaren_point').value || "1";
+      const uPoint = document.getElementById('umaren_point').value.trim();
       const uMan = document.getElementById('umaren_man').value || "";
       const uEn = document.getElementById('umaren_en').value || "";
       const uPct = document.getElementById('umaren_pct').value || "";
 
-      let umarenAmount = (uMan ? uMan + "万" : "") + uEn + "円";
-      let recovery = "";
-      if (uPct && uEn) {
-        const rate = Math.round(parseInt(uEn) * (parseInt(uPct) / 100));
-        recovery = `<span>(※割合回収率${rate}％！)</span><br>`;
+      let payoutHTML = "";
+
+      if (sMan || sEn) payoutHTML += `<span>3連単</span><strong>${formatMoney(sMan, sEn)}</strong>的中<br>\n`;
+      if (spMan || spEn) payoutHTML += `<span>3連複</span><strong>${formatMoney(spMan, spEn)}</strong>的中<br>\n`;
+      if (uMan || uEn) {
+        const pointText = uPoint ? uPoint + "点目" : "";
+        const amount = formatMoney(uMan, uEn);
+        payoutHTML += `<span>馬連${pointText}</span><strong>${amount}</strong>的中${uPct ? `(${uPct}％指定)` : ''}<br>\n`;
+      }
+      if (uPct && (uMan || uEn)) {
+        const total = (parseInt(uMan || 0) * 10000) + parseInt(uEn || 0);
+        const rate = Math.round(total * (parseInt(uPct) / 100));
+        payoutHTML += `<span>(※割合回収率${rate}％！)</span><br>\n`;
       }
 
+      const cid = document.getElementById('cid').value || "104137";
+
       const banner = `<div class="tekicyuBox">
-<a href="/members/hit/record.html?cid=103968#teki03">
+<a href="/members/hit/record.html?cid=${cid}#teki03">
 <div class="tekicyuImg"><img src="${thumb}" alt=""></div>
 <div class="tekicyuBottom">
 <p class="ot_ti_text"><span style="color:#FF0000">${title1}</span><br>${title2}</p>
@@ -258,14 +286,11 @@
 <p class="ot_date">${date}</p>
 <p class="ot_chakujun">
 <span style="color:#FF0000"><b>◎${horse1}</b></span><br>
-<b>▲${horse2}</b><br>
-<b>○${horse3}</b>
+<b>○${horse2}</b><br>
+<b>▲${horse3}</b>
 </p>
 <p class="ot_haito">
-<span>3連単</span><strong>${sMan ? sMan+"万" : ""}${sEn}円</strong>的中<br>
-<span>3連複</span><strong>${spEn}円</strong>的中<br>
-<span>馬連${uPoint}点目</span><strong>${umarenAmount}</strong>的中${uPct ? `(${uPct}％指定)` : ''}<br>
-${recovery}
+${payoutHTML}
 </p>
 </div>
 </a>
@@ -285,7 +310,8 @@ ${banner}
 <div style="text-align: center">
 <a href="https://www.t-tank.net/members/hit/board.html" class="ot_btn">
 実際に会員様から寄せられた<br>
-的中画像、歓喜の声を公開中！</a>
+的中画像、歓喜の声を公開中！
+</a>
 </div>
 <!--${raceName} ここまで-->`;
 
@@ -294,7 +320,7 @@ ${banner}
 
     function copyText(id) {
       const text = document.getElementById(id).textContent;
-      navigator.clipboard.writeText(text).then(() => alert('コピー完了'));
+      navigator.clipboard.writeText(text).then(() => alert('コピーしました！'));
     }
 
     window.onload = updateRankInfo;
