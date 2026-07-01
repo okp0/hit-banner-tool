@@ -1,18 +1,19 @@
 <!DOCTYPE html>
-<!-- ===== 簡易ログイン認証 ===== -->
+<!-- ログアウトボタン -->
+<div class="flex justify-end p-4 bg-white border-b">
+  <button onclick="logout()" 
+          class="text-red-600 hover:text-red-700 font-medium flex items-center gap-1">
+    ← ログアウト
+  </button>
+</div>
+
 <script>
-const correctId = "thinktank";
-const correctPassword = "ttank-7284";
-
-const enteredId = prompt("IDを入力してください：");
-const enteredPassword = prompt("パスワードを入力してください：");
-
-if (enteredId !== correctId || enteredPassword !== correctPassword) {
-  alert("IDまたはパスワードが違います。");
-  window.location.href = "https://www.google.com";  // 間違えたら飛ばす
+function logout() {
+  if (confirm("ログアウトしますか？")) {
+    window.location.href = "login.html";
+  }
 }
 </script>
-<!-- ===== ここまで ===== -->
 <html lang="ja">
 <head>
   <meta charset="UTF-8">
