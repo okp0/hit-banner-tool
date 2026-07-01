@@ -1,4 +1,18 @@
 <!DOCTYPE html>
+<!-- ===== 簡易ログイン認証 ===== -->
+<script>
+const correctId = "thinktank";
+const correctPassword = "ttank-7284";
+
+const enteredId = prompt("IDを入力してください：");
+const enteredPassword = prompt("パスワードを入力してください：");
+
+if (enteredId !== correctId || enteredPassword !== correctPassword) {
+  alert("IDまたはパスワードが違います。");
+  window.location.href = "https://www.google.com";  // 間違えたら飛ばす
+}
+</script>
+<!-- ===== ここまで ===== -->
 <html lang="ja">
 <head>
   <meta charset="UTF-8">
