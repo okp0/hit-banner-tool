@@ -13,17 +13,15 @@
   <div class="max-w-6xl mx-auto bg-white rounded-2xl shadow-xl p-8">
     <!-- タイトル + ログアウトボタン -->
     <div class="flex justify-between items-center mb-8">
-      <div class="flex-1"></div>
       <div class="flex items-center gap-3">
         <span class="text-4xl">🎯</span>
-        <h1 class="text-3xl font-bold text-center">的中バナー&ページ 生成ツール</h1>
+        <h1 class="text-3xl font-bold">的中バナー&ページ 生成ツール</h1>
       </div>
-      <div class="flex-1 flex justify-end">
-        <button onclick="logout()" 
-                class="text-red-600 hover:text-red-700 font-medium flex items-center gap-1 px-4 py-2 rounded-lg hover:bg-red-50 transition whitespace-nowrap">
-          ← ログアウト
-        </button>
-      </div>
+      
+      <button onclick="logout()" 
+              class="text-red-600 hover:text-red-700 font-medium flex items-center gap-1 px-4 py-2 rounded-lg hover:bg-red-50 transition whitespace-nowrap">
+        ← ログアウト
+      </button>
     </div>
 
     <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
@@ -260,8 +258,11 @@
       const title2 = document.getElementById('title2').value;
 
       const horse1 = document.getElementById('horse1').value || "";
+      const pop1 = document.getElementById('pop1').value ? `(${document.getElementById('pop1').value}番人気)` : "";
       const horse2 = document.getElementById('horse2').value || "";
+      const pop2 = document.getElementById('pop2').value ? `(${document.getElementById('pop2').value}番人気)` : "";
       const horse3 = document.getElementById('horse3').value || "";
+      const pop3 = document.getElementById('pop3').value ? `(${document.getElementById('pop3').value}番人気)` : "";
 
       const sMan = document.getElementById('sanrentan_man').value || "";
       const sEn = document.getElementById('sanrentan_en').value || "";
@@ -299,9 +300,9 @@
 <p class="ot_kenshu">${kenshu}</p>
 <p class="ot_date">${date}</p>
 <p class="ot_chakujun">
-<span style="color:#FF0000"><b>◎${horse1}</b></span><br>
-<b>○${horse2}</b><br>
-<b>▲${horse3}</b>
+<span style="color:#FF0000"><b>◎${horse1}</b></span>${pop1}<br>
+<b>${document.getElementById('mark2').value}${horse2}</b>${pop2}<br>
+<b>${document.getElementById('mark3').value}${horse3}</b>${pop3}
 </p>
 <p class="ot_haito">
 ${payoutHTML}
@@ -337,7 +338,6 @@ ${banner}
       navigator.clipboard.writeText(text).then(() => alert('コピーしました！'));
     }
 
-    // ログアウト関数（1箇所だけ明確に定義）
     function logout() {
       if (confirm("ログアウトしますか？")) {
         window.location.href = "login.html";
