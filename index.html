@@ -275,7 +275,6 @@
       const uPct = document.getElementById('umaren_pct').value || "";
 
       let payoutHTML = "";
-
       if (sMan || sEn) payoutHTML += `<span>3連単</span><strong>${formatMoney(sMan, sEn)}</strong>的中<br>\n`;
       if (spMan || spEn) payoutHTML += `<span>3連複</span><strong>${formatMoney(spMan, spEn)}</strong>的中<br>\n`;
       if (uMan || uEn) {
@@ -291,6 +290,7 @@
 
       const cid = document.getElementById('cid').value || "104137";
 
+      // 的中バナー（リンク付き）
       const banner = `<div class="tekicyuBox">
 <a href="/members/hit/record.html?cid=${cid}#teki03">
 <div class="tekicyuImg"><img src="${thumb}" alt=""></div>
@@ -313,10 +313,28 @@ ${payoutHTML}
 
       document.getElementById('bannerOutput').textContent = banner;
 
-      const page = `<!--${raceName} ここから-->
-<div class="tekicyuBox">
-${banner}
+      // 的中ページ用（a nameアンカー付き・リンクなし）
+      const pageBanner = `<div class="tekicyuBox">
+<div class="tekicyuImg"><img src="${thumb}" alt=""></div>
+<div class="tekicyuBottom">
+<p class="ot_ti_text"><span style="color:#FF0000">${title1}</span><br>${title2}</p>
+<br>
+<p class="ot_kenshu">${kenshu}</p>
+<p class="ot_date">${date}</p>
+<p class="ot_chakujun">
+<span style="color:#FF0000"><b>◎${horse1}</b></span>${pop1}<br>
+<b>${document.getElementById('mark2').value}${horse2}</b>${pop2}<br>
+<b>${document.getElementById('mark3').value}${horse3}</b>${pop3}
+</p>
+<p class="ot_haito">
+${payoutHTML}
+</p>
 </div>
+</div>`;
+
+      const page = `<!--${raceName} ここから-->
+<a name="teki03"></a>
+${pageBanner}
 <p class="ot_info"><strong>こんな情報でした</strong></p>
 <div class="ot_box">
 <p class="ot_text">${document.getElementById('bodyText').value || '解説文'}</p>
