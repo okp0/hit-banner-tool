@@ -41,6 +41,7 @@
             <option value="Cランク">Cランク</option>
             <option value="厳選提供">厳選提供</option>
             <option value="重賞メイン">重賞メイン</option>
+            <option value="北海道特別チーム">北海道特別チーム</option>
           </select>
         </div>
 
@@ -207,7 +208,8 @@
       "Bランク": "https://www-f.t-tank.net/img/pics/thumbnail/gensen.jpg",
       "Cランク": "https://www-f.t-tank.net/img/pics/thumbnail/C.jpg",
       "厳選提供": "https://www-f.t-tank.net/img/pics/thumbnail/gensen.jpg",
-      "重賞メイン": "https://www-f.t-tank.net/img/pics/thumbnail/jusyo.jpg"
+      "重賞メイン": "https://www-f.t-tank.net/img/pics/thumbnail/jusyo.jpg",
+      "北海道特別チーム": "https://www-f.t-tank.net/img/pics/thumbnail/20260611kita.png?1781175647"
     };
 
     const kenshuMap = {
@@ -216,7 +218,8 @@
       "Bランク": "推薦勝負レースB",
       "Cランク": "推薦勝負レースC",
       "厳選提供": "特注馬出走レースD",
-      "重賞メイン": ""
+      "重賞メイン": "",
+      "北海道特別チーム": "北海道特別チーム"
     };
 
     function updateRankInfo() {
@@ -275,17 +278,21 @@
       const uPct = document.getElementById('umaren_pct').value || "";
 
       let payoutHTML = "";
-      if (sMan || sEn) payoutHTML += `<span>3連単</span><strong>${formatMoney(sMan, sEn)}</strong>的中<br>\n`;
-      if (spMan || spEn) payoutHTML += `<span>3連複</span><strong>${formatMoney(spMan, spEn)}</strong>的中<br>\n`;
+      if (sMan || sEn) payoutHTML += `<span>3連単</span><strong>${formatMoney(sMan, sEn)}</strong>的中<br>
+`;
+      if (spMan || spEn) payoutHTML += `<span>3連複</span><strong>${formatMoney(spMan, spEn)}</strong>的中<br>
+`;
       if (uMan || uEn) {
         const pointText = uPoint ? uPoint + "点目" : "";
         const amount = formatMoney(uMan, uEn);
-        payoutHTML += `<span>馬連${pointText}</span><strong>${amount}</strong>的中${uPct ? `(${uPct}％指定)` : ''}<br>\n`;
+        payoutHTML += `<span>馬連${pointText}</span><strong>${amount}</strong>的中${uPct ? `(${uPct}％指定)` : ''}<br>
+`;
       }
       if (uPct && (uMan || uEn)) {
         const total = (parseInt(uMan || 0) * 10000) + parseInt(uEn || 0);
         const rate = Math.round(total * (parseInt(uPct) / 100));
-        payoutHTML += `<span>(※割合回収率${rate}％！)</span><br>\n`;
+        payoutHTML += `<span>(※割合回収率${rate}％！)</span><br>
+`;
       }
 
       const cid = document.getElementById('cid').value || "104137";
