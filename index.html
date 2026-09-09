@@ -205,9 +205,9 @@
         }
       }
 
-      // 日付の整形
+      // 日付の整形（曜日とレース名の間のスペースを除去）
       let formattedDate = toHalfWidth(dateLine);
-      formattedDate = formattedDate.replace(/^\d+年/, "").replace(/\(日\)\s+/, "(日)");
+      formattedDate = formattedDate.replace(/^\d+年/, "").replace(/(\([月火水木金土日]\))\s+/, "$1");
 
       window.currentRaceName = raceTitleLine;
 
@@ -236,20 +236,16 @@
         
         let showPop = false;
         if (h.popNum === "1") {
-          // 1番人気は常に非表示
           showPop = false;
         } else if (h.popNum === "2") {
-          // 2番人気は◎のみ表示
           if (h.mark === "◎") {
             showPop = true;
           }
         } else if (h.popNum === "3") {
-          // 3番人気は▲や△以外（◎や◯など）なら表示
           if (h.mark !== "▲" && h.mark !== "△") {
             showPop = true;
           }
         } else if (h.popNum) {
-          // 4番人気以降などは基本表示
           showPop = true;
         }
 
