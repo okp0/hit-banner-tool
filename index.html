@@ -193,14 +193,16 @@
           }
           horses.push({ mark, horseName, popNum });
         }
-        else if (line.includes("連単") || line.includes("連複") || line.includes("馬連") || line.includes("ワイド") || line.includes("単勝") || line.includes("複勝")) {
+        else if (line.includes("連単") || line.includes("連複") || line.includes("馬") || line.includes("ワイド") || line.includes("単勝") || line.includes("複勝")) {
           let halfLine = toHalfWidth(line);
-          if (halfLine.includes("3連単") || halfLine.includes("３連単")) {
-            payouts["3連単"] = parseAndFormatMoney(halfLine.replace(/.*3連単\s*/, ""));
-          } else if (halfLine.includes("3連複") || halfLine.includes("３連複")) {
-            payouts["3連複"] = parseAndFormatMoney(halfLine.replace(/.*3連複\s*/, ""));
-          } else if (halfLine.includes("馬連")) {
-            payouts["馬連"] = parseAndFormatMoney(halfLine.replace(/.*馬連\s*/, ""));
+          let cleanLine = halfLine.replace(/\s+/g, ""); // スペースを削除して判定
+          
+          if (cleanLine.includes("3連単") || cleanLine.includes("３連単")) {
+            payouts["3連単"] = parseAndFormatMoney(cleanLine.replace(/.*3連単/, ""));
+          } else if (cleanLine.includes("3連複") || cleanLine.includes("３連複")) {
+            payouts["3連複"] = parseAndFormatMoney(cleanLine.replace(/.*3連複/, ""));
+          } else if (cleanLine.includes("馬連")) {
+            payouts["馬連"] = parseAndFormatMoney(cleanLine.replace(/.*馬連/, ""));
           }
         }
       }
