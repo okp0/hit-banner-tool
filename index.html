@@ -2,7 +2,7 @@
 <html lang="ja">
 <head>
   <meta charset="UTF-8">
-  <title>🎯 的中バナー&ページ生成</title>
+  <title>🎯 的中バナー&ページ 生成</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <style>
     pre { white-space: pre-wrap; word-break: break-all; line-height: 1.6; }
@@ -84,6 +84,14 @@
 
       <!-- 出力 -->
       <div>
+        <!-- 的中ページのみ生成するチェックボックス（ボタンの真上に移動） -->
+        <div class="flex items-center gap-2 bg-blue-50 p-4 rounded-lg border border-blue-100 mb-4">
+          <input type="checkbox" id="onlyPage" class="w-5 h-5 text-blue-600 rounded">
+          <label for="onlyPage" class="text-sm font-medium text-blue-900 cursor-pointer">
+            的中ページのみ生成
+          </label>
+        </div>
+
         <button onclick="generateBoth()" class="w-full bg-blue-600 hover:bg-blue-700 text-white py-4 rounded-xl text-lg font-medium mb-6">
           🔄 的中バナー&ページ 生成
         </button>
@@ -160,6 +168,7 @@
       const rawText = document.getElementById('rawInput').value;
       const rank = document.getElementById('rank').value;
       const thumb = document.getElementById('thumb').value;
+      const isOnlyPage = document.getElementById('onlyPage').checked;
       
       let dateLine = "";
       let raceTitleLine = "";
@@ -255,6 +264,23 @@
         horseHtml += `<span${style}><b>${h.mark}${h.horseName}</b>${popText}</span><br>\n`;
       });
 
+      // ① 馬連のn点目自動判定処理
+      let umaRenLabel = "馬連";
+      if (horses.length >= 2) {
+        let firstMark = horses[0].mark;  // 上1頭目
+        let secondMark = horses[1].mark; // 上2頭目
+        let combination = firstMark + secondMark;
+
+        // 〇◎ または ◎〇 の場合は 1点目
+        if (combination === "〇◎" || combination === "◎〇" || combination === "◯◎" || combination === "◎◯") {
+          umaRenLabel = "馬連1点目";
+        }
+        // ▲◎ または ◎▲ の場合は 2点目
+        else if (combination === "▲◎" || combination === "◎▲") {
+          umaRenLabel = "馬連2点目";
+        }
+      }
+
       // 払戻金HTMLの生成
       let payoutHTML = "";
       if (payouts["3連単"]) {
@@ -264,14 +290,16 @@
         payoutHTML += `<span>3連複</span><strong>${payouts["3連複"]}</strong>的中<br>\n`;
       }
       if (payouts["馬連"]) {
-        payoutHTML += `<span>馬連</span><strong>${payouts["馬連"]}</strong>的中<br>\n`;
+        payoutHTML += `<span>${umaRenLabel}</span><strong>${payouts["馬連"]}</strong>的中<br>\n`;
       }
 
       const cid = document.getElementById('cid').value || "104733";
       const bodyText = document.getElementById('bodyText').value;
 
-      // 的中バナー（リンク付き）
-      const banner = `<div class="tekicyuBox">
+      // 的中バナー（「的中ページのみ生成」にチェックが入っている場合は非表示にする）
+      let banner = "";
+      if (!isOnlyPage) {
+        banner = `<div class="tekicyuBox">
 <a href="/members/hit/record.html?cid=${cid}#teki03">
 <div class="tekicyuImg"><img src="${thumb}" alt=""></div>
 <div class="tekicyuBottom">
@@ -286,10 +314,11 @@ ${payoutHTML.trim()}
 </div>
 </a>
 </div>`;
+      }
 
       document.getElementById('bannerOutput').textContent = banner;
 
-      // 的中ページ用（a nameアンカー付き・リンクなし）
+      // 的中ページ用（「的中ページのみ生成」の場合はアンカータグを付けない）
       const pageBanner = `<div class="tekicyuBox">
 <div class="tekicyuImg"><img src="${thumb}" alt=""></div>
 <div class="tekicyuBottom">
@@ -312,9 +341,10 @@ ${payoutHTML.trim()}
 </div>`;
       }
 
+      let anchorTag = isOnlyPage ? "" : '<a name="teki03"></a>\n';
+
       const page = `<!--${raceTitleLine} ここから-->
-<a name="teki03"></a>
-${pageBanner}
+${anchorTag}${pageBanner}
 ${bodySection}
 <!--ボタン-->
 <div style="text-align: center">
